@@ -15,7 +15,6 @@ import org.apache.commons.cli.PosixParser;
 import org.eclipse.linuxtools.tmf.core.ctfadaptor.CtfTmfEvent;
 import org.eclipse.linuxtools.tmf.core.ctfadaptor.CtfTmfTrace;
 import org.eclipse.linuxtools.tmf.core.event.ITmfEvent;
-import org.eclipse.linuxtools.tmf.core.processing.TmfProcessingUnitAdaptor;
 import org.eclipse.linuxtools.tmf.core.request.TmfEventRequest;
 import org.eclipse.linuxtools.tmf.core.trace.ITmfTrace;
 import org.eclipse.linuxtools.tmf.core.trace.TmfExperiment;
@@ -47,7 +46,11 @@ public class MainMemview {
 		}
 	}
 
-	public static class HandleMemoryEvents extends TmfProcessingUnitAdaptor {
+	public static interface ITmfProcessingUnit {
+		public void handleEvent(ITmfEvent event);
+	}
+
+	public static class HandleMemoryEvents implements ITmfProcessingUnit {
 		public ArrayListMultimap<Long, Point> dataUser; // (tid, points)
 		public ArrayListMultimap<Long, Point> dataKernel; // (tid, points)
 		public Table<Long, Long, Long> malloc; // (tid, ptr, size)
