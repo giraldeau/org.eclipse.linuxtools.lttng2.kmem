@@ -1,32 +1,15 @@
 package org.eclipse.linuxtools.lttng2.kmem.views;
 
-
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.linuxtools.tmf.ui.views.TmfView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.swtchart.Chart;
+import org.swtchart.ISeries.SeriesType;
 
 public class LttngMemoryView extends TmfView {
 
@@ -35,50 +18,12 @@ public class LttngMemoryView extends TmfView {
 	 */
 	public static final String ID = "org.eclipse.linuxtools.lttng2.memview.views.LttngMemoryView";
 
-	private TableViewer viewer;
-	private Action action1;
-	private Action action2;
-	private Action doubleClickAction;
+	public static final String SERIES_KERNEL = "kernel";
+	public static final String SERIES_LIBC   = "libc";
 
-	/*
-	 * The content provider class is responsible for
-	 * providing objects to the view. It can wrap
-	 * existing objects in adapters or simply return
-	 * objects as-is. These objects may be sensitive
-	 * to the current input of the view, or ignore
-	 * it and always show the same content
-	 * (like Task List, for example).
-	 */
+	private Composite fPane;
 
-	class ViewContentProvider implements IStructuredContentProvider {
-		@Override
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-		@Override
-		public void dispose() {
-		}
-		@Override
-		public Object[] getElements(Object parent) {
-			return new String[] { "One", "Two", "Three" };
-		}
-	}
-	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
-		@Override
-		public String getColumnText(Object obj, int index) {
-			return getText(obj);
-		}
-		@Override
-		public Image getColumnImage(Object obj, int index) {
-			return getImage(obj);
-		}
-		@Override
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-		}
-	}
-	class NameSorter extends ViewerSorter {
-	}
+	private Chart fChart;
 
 	/**
 	 * The constructor.
@@ -98,21 +43,22 @@ public class LttngMemoryView extends TmfView {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
+		fPane = new Composite(parent, SWT.NONE);
+		fPane.setLayout(new FillLayout());
+		fChart = new Chart(fPane, SWT.NONE);
+		fChart.getSeriesSet().createSeries(SeriesType.LINE, SERIES_KERNEL);
+		fChart.getSeriesSet().createSeries(SeriesType.LINE, SERIES_LIBC);
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.lttng2.memview.viewer");
-		makeActions();
-		hookContextMenu();
-		hookDoubleClickAction();
-		contributeToActionBars();
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(fPane, "org.eclipse.linuxtools.lttng2.memview.viewer");
+		//makeActions();
+		//hookContextMenu();
+		//hookDoubleClickAction();
+		//contributeToActionBars();
 	}
 
 	private void hookContextMenu() {
+		/*
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -124,6 +70,7 @@ public class LttngMemoryView extends TmfView {
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewer);
+		*/
 	}
 
 	private void contributeToActionBars() {
@@ -133,24 +80,25 @@ public class LttngMemoryView extends TmfView {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(new Separator());
-		manager.add(action2);
+		//manager.add(action1);
+		//manager.add(new Separator());
+		//manager.add(action2);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(action2);
+		//manager.add(action1);
+		//manager.add(action2);
 		// Other plug-ins can contribute there actions here
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		//manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(action1);
-		manager.add(action2);
+		//manager.add(action1);
+		//manager.add(action2);
 	}
 
 	private void makeActions() {
+		/*
 		action1 = new Action() {
 			@Override
 			public void run() {
@@ -180,21 +128,7 @@ public class LttngMemoryView extends TmfView {
 				showMessage("Double-click detected on "+obj.toString());
 			}
 		};
-	}
-
-	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
-	}
-	private void showMessage(String message) {
-		MessageDialog.openInformation(
-			viewer.getControl().getShell(),
-			"Sample View",
-			message);
+		*/
 	}
 
 	/**
@@ -202,6 +136,6 @@ public class LttngMemoryView extends TmfView {
 	 */
 	@Override
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		fPane.setFocus();
 	}
 }
