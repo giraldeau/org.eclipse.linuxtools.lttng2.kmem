@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.apache.commons.cli;bundle-version="1.2.0",
  org.eclipse.linuxtools.tmf.core;bundle-version="2.0.0",
  org.eclipse.core.resources;bundle-version="3.8.1",
- com.google.guava;bundle-version="11.0.1"
+ com.google.guava;bundle-version="11.0.1",
+ org.eclipse.linuxtools.tmf.ui;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,
  JavaSE-1.7
 Bundle-ActivationPolicy: lazy

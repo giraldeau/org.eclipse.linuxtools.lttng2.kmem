@@ -4,16 +4,12 @@
 
    <extension
          point="org.eclipse.ui.views">
-      <category
-            name="Sample Category"
-            id="org.eclipse.linuxtools.lttng2.memview">
-      </category>
       <view
-            name="Sample View"
+            name="Memory"
             icon="icons/sample.gif"
-            category="org.eclipse.linuxtools.lttng2.memview"
-            class="org.eclipse.linuxtools.lttng2.kmem.views.SampleView"
-            id="org.eclipse.linuxtools.lttng2.memview.views.SampleView">
+            category="org.eclipse.linuxtools.lttng2.ui.views.category"
+            class="org.eclipse.linuxtools.lttng2.kmem.views.LttngMemoryView"
+            id="org.eclipse.linuxtools.lttng2.memview.views.LttngMemoryView">
       </view>
    </extension>
    <extension
