@@ -166,12 +166,8 @@ public class MainMemview {
 		final HandleMemoryEvents handler = new HandleMemoryEvents();
 		final FileWriter w = new FileWriter(new File("out.events"));
 		TmfEventRequest req = new TmfEventRequest(CtfTmfEvent.class) {
-			int cnt = 0;
 			@Override
 			public void handleData(ITmfEvent event) {
-				cnt++;
-				if (cnt == 455)
-					System.out.println("fuck");
 				handler.handleEvent(event);
 				CtfTmfEvent ev = (CtfTmfEvent) event;
 				try {
