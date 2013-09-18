@@ -236,8 +236,8 @@ public class LttngMemoryView extends TmfView {
 					e.printStackTrace();
 				}
 				synchronized (fMemViewLock) {
-					data.put(SERIES_KERNEL, handler.dataKernel);
-					data.put(SERIES_LIBC, handler.dataUser);
+					data.put(SERIES_KERNEL, handler.physical);
+					data.put(SERIES_LIBC, handler.heap);
 				}
 				updateDataAsync();
 				return Status.OK_STATUS;
